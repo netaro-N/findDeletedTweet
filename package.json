@@ -1,0 +1,23 @@
+{
+  "name": "finddeletedtweet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netaro-N/findDeletedTweet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/netaro-N/findDeletedTweet/issues"
+  },
+  "homepage": "https://github.com/netaro-N/findDeletedTweet#readme",
+  "dependencies": {
+    "cron": "^1.7.0",
+    "twitter": "^1.7.1"
+  }
+}
