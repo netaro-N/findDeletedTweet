@@ -9,7 +9,21 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_API_ACCESS_TOKEN_SECRET
 });
 
-client.post('direct_messages/events/new.json', {
+/*
+client.post('direct_messages/events/new', {
+  recipient_id: '973005325614792704',
+  text: 'Hello Direct Message!'
+})
+.then((response) => {
+  console.log(response);
+})
+.catch((error) => {
+  console.log(error);
+});
+*/
+
+
+client.post('direct_messages/events/new', {
   event: {
     type: 'message_create',
     message_create: {
@@ -21,12 +35,10 @@ client.post('direct_messages/events/new.json', {
       }
     }
   }
-    },true)
-    /*
+    })
     .then((response) => {
-      console.log(response); //,'font-weight: bold; font-size: 24px; color: #22AAFF;'
+      console.log(response);
     })
     .catch((error) => {
       console.log(error);
     });
-    */
