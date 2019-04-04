@@ -1,5 +1,5 @@
 'use strict';
-const Twitter = require('twitter');
+const Twitter = require('twitter-lite');
 require('dotenv').config();
 
 const client = new Twitter({
@@ -8,20 +8,6 @@ const client = new Twitter({
   access_token_key: process.env.TWITTER_API_ACCESS_TOKEN_KEY,
   access_token_secret: process.env.TWITTER_API_ACCESS_TOKEN_SECRET
 });
-
-/*
-client.post('direct_messages/events/new', {
-  recipient_id: '973005325614792704',
-  text: 'Hello Direct Message!'
-})
-.then((response) => {
-  console.log(response);
-})
-.catch((error) => {
-  console.log(error);
-});
-*/
-
 
 client.post('direct_messages/events/new', {
   event: {
