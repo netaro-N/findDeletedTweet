@@ -1,5 +1,6 @@
 'use strict';
 const Twitter = require('twitter-lite');
+const cron = require('cron').CronJob;
 require('dotenv').config();
 
 const client = new Twitter({
@@ -9,6 +10,7 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_API_ACCESS_TOKEN_SECRET
 });
 
+function sendDirectMessage(message) {
 client.post('direct_messages/events/new', {
   event: {
     type: 'message_create',
@@ -28,3 +30,6 @@ client.post('direct_messages/events/new', {
     .catch((error) => {
       console.log(error);
     });
+}
+
+
