@@ -32,4 +32,13 @@ client.post('direct_messages/events/new', {
     });
 }
 
+const savedTweetsMap = new Map();
 
+function getHomeTimeLine() {
+
+}
+
+const cronJob = new cron({
+
+});
+getHomeTimeLine();
