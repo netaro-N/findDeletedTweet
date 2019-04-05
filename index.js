@@ -35,10 +35,40 @@ client.post('direct_messages/events/new', {
 const savedTweetsMap = new Map();
 
 function getHomeTimeLine() {
+    console.log('cron came!');
+    client.get('statuses/home_timeline', { count: 5 }, function(error, tweets, response) {
+      console.log('get!');
+      if (error) {
+          console.log(error);
+          return;
+      }
 
+      // 初回起動時は取得するだけで終了
+      if (savedTweetsMap.size === 0) {
+          tweets.forEach(function(homeTimeLineTweet, key) {
+              savedTweetsMap.set(homeTimeLineTweet.id, homeTimeLineTweet); // マップに追加
+          });
+          console.log(savedTweetsMap);
+
+          return;
+      }
+
+      // 新しいツイートを追加
+      for (let j = 0; j < tweets.length; j++) {
+          if (savedTweetsMap.has(tweets[j].id) === false) {
+              savedTweetsMap.set(tweets[j].id, tweets[j]);
+          }
+      }
+      console.log(savedTweetsMap);
+
+    });
 }
 
 const cronJob = new cron({
-
+  cronTime: '00 */2 * * * *', // 2分ごとに実行
+  start: true, //new した後即時実行するかどうか
+  onTick: function() {
+      getHomeTimeLine();
+  }
 });
 getHomeTimeLine();
