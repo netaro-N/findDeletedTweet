@@ -1,6 +1,7 @@
 'use strict';
 const Twitter = require('twit');
 const cron = require('cron').CronJob;
+const moment = require('moment-timezone');
 require('dotenv').config();
 
 const client = new Twitter({
@@ -37,7 +38,6 @@ const savedTweetsMap = new Map();
 function getHomeTimeLine() {
     console.log('cron came!');
     client.get('statuses/home_timeline', { count: 5 }, function(error, tweets, response) {
-      console.log('get!');
       if (error) {
           console.log(error);
           return;
@@ -48,7 +48,7 @@ function getHomeTimeLine() {
           tweets.forEach(function(homeTimeLineTweet, key) {
               savedTweetsMap.set(homeTimeLineTweet.id, homeTimeLineTweet); // マップに追加
           });
-          console.log(savedTweetsMap);
+          //console.log(savedTweetsMap);
 
           return;
       }
@@ -59,7 +59,7 @@ function getHomeTimeLine() {
               savedTweetsMap.set(tweets[j].id, tweets[j]);
           }
       }
-      console.log(savedTweetsMap);
+      //console.log(savedTweetsMap);
 
     });
 }
