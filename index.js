@@ -20,7 +20,7 @@ client.post('direct_messages/events/new', {
         recipient_id: '973005325614792704'
       },
       message_data: {
-        text: 'Hello World!'
+        text: message
       }
     }
   }
@@ -37,14 +37,14 @@ const savedTweetsMap = new Map();
 
 function getHomeTimeLine() {
     console.log('cron came!');
-    client.get('statuses/home_timeline', { count: 5 }, function(error, tweets, response) {
+    client.get('statuses/home_timeline', { count: 100 }, function(error, tweets, response) {
       if (error) {
           console.log(error);
           return;
       }
 
       tweets = dateFormats(tweets);
-      console.log(tweets[0].created_at);
+      //console.log(tweets[0].created_at);
 
       // 初回起動時は取得するだけで終了
       if (savedTweetsMap.size === 0) {
@@ -55,6 +55,32 @@ function getHomeTimeLine() {
 
           return;
       }
+
+      const oldestTime = tweets[tweets.length - 1].created_at;
+      savedTweetsMap.forEach(function(savedTweet, key) {
+          let isFound = false;
+          for (let i = 0; i < tweets.length; i++) {
+            if (savedTweet.created_at < oldestTime) {
+                // 調査ができなくなったツイート
+                savedTweetsMap.delete(key); // 削除
+                isFound = true;
+                break;
+            }
+            if (savedTweet.id_str === tweets[i].id_str) {
+                // ちゃんと見つかった（削除されていないツイート）
+                isFound = true;
+                break;
+            }
+          }
+          if (isFound === false) {
+              const message = `削除されたツイートが見つかりました！\n` +
+                  `ユーザー名:${savedTweet.user.name}\n` +
+                  `時刻:${savedTweet.created_at}\n` +
+                  savedTweet.text;
+              sendDirectMessage(message);
+              savedTweetsMap.delete(key); // 削除
+          }
+      })
 
       // 新しいツイートを追加
       for (let j = 0; j < tweets.length; j++) {
