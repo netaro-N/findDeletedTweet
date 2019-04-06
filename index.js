@@ -43,6 +43,9 @@ function getHomeTimeLine() {
           return;
       }
 
+      tweets = dateFormats(tweets);
+      console.log(tweets[0].created_at);
+
       // 初回起動時は取得するだけで終了
       if (savedTweetsMap.size === 0) {
           tweets.forEach(function(homeTimeLineTweet, key) {
@@ -62,6 +65,19 @@ function getHomeTimeLine() {
       //console.log(savedTweetsMap);
 
     });
+}
+
+// 日付処理
+function dateFormats(tweets) {
+  tweets.forEach(function(tweet, key) {
+
+    const times = tweet.created_at.split(' ');
+    const date = new Date(times[1] + ' ' + times[2] + ', ' + times[5] + ' ' + times[3]); //( Monthly DD , YYYY HH:mm:ss ) 
+    //console.log(times[1] + ' ' + times[2] + ', ' + times[5] + ' ' + times[3]);
+    tweet.created_at = moment(date).tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
+  });
+
+  return tweets;
 }
 
 const cronJob = new cron({
